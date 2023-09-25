@@ -107,29 +107,35 @@ class Radix {
   /**
    * Draw universe.
    */
+
   drawUniverse(): void {
-    const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id)
+    const universe = this.universe;
+    const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id);
+
+    const SPACING = 2; // 2-degree spacing
+    const SEGMENT_ANGLE = 30 - SPACING; // Adjusted segment angle
 
     // colors
-    for (let i = 0, step = 30, start = this.shift, len = this.settings.COLORS_SIGNS.length; i < len; i++) {
-      const segment = this.paper.segment(this.cx, this.cy, this.radius, start, start + step, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
-      segment.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLORS_SIGNS[i])
-      segment.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS + '-' + i)
-      segment.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.CIRCLE_COLOR : 'none')
-      segment.setAttribute('stroke-width', this.settings.STROKE_ONLY ? '1' : '0')
-      wrapper.appendChild(segment)
+    for (let i = 0, start = this.shift, len = this.settings.COLORS_SIGNS.length; i < len; i++) {
+      const segment = this.paper.segment(this.cx, this.cy, this.radius, start, start + SEGMENT_ANGLE, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO);
+      segment.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLORS_SIGNS[i]);
+      segment.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS + '-' + i);
+      segment.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.CIRCLE_COLOR : 'none');
+      segment.setAttribute('stroke-width', this.settings.STROKE_ONLY ? '1' : '0');
+      wrapper.appendChild(segment);
 
-      start += step
+      start += 30; // Move to next sign without spacing
     }
 
     // signs
-    for (let i = 0, step = 30, start = 15 + this.shift, len = this.settings.SYMBOL_SIGNS.length; i < len; i++) {
-      const position = getPointPosition(this.cx, this.cy, this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO) / 2, start, this.settings)
-      wrapper.appendChild(this.paper.getSymbol(this.settings.SYMBOL_SIGNS[i], position.x, position.y))
-      start += step
+    for (let i = 0, start = this.shift + SEGMENT_ANGLE / 2, len = this.settings.SYMBOL_SIGNS.length; i < len; i++) {
+      const position = getPointPosition(this.cx, this.cy, this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO) / 2, start, this.settings);
+      wrapper.appendChild(this.paper.getSymbol(this.settings.SYMBOL_SIGNS[i], position.x, position.y));
+
+      start += 30; // Move to the center of the next segment
     }
-  }
+}
+
 
   /**
    * Draw points
