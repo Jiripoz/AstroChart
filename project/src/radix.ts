@@ -112,7 +112,7 @@ class Radix {
     const universe = this.universe;
     const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id);
 
-    const SPACING = 2; // 2-degree spacing
+    const SPACING = 0.4; // 2-degree spacing
     const SEGMENT_ANGLE = 30 - SPACING; // Adjusted segment angle
 
     // colors
